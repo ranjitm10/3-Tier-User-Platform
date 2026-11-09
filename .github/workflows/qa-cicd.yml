@@ -19,4 +19,12 @@ jobs:
         uses: actions/checkout@4
 
       - name: Run GitLeaks Scan
-        run: 
+        run: |                         # "|" lets us write a multi-line shell command
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            zricethezav/gitleaks:latest detect \
+            --source=/repo \
+            --report-format=json \
+            --report-path=/repo/gitleaks-report.json \
+            --redact \
+            --exit-code 0
