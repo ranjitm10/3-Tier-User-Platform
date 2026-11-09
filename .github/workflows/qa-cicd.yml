@@ -7,3 +7,16 @@ on:
       - client/**
       - server/**
       - .github/workflows/qa-cicd.yml
+
+# Stage : 1 GitLeak Scan
+
+jobs:
+  gitleak-scan:
+    name: GitLeak-scan
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@4
+
+      - name: Run GitLeaks Scan
+        run: 
