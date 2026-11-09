@@ -283,3 +283,58 @@ jobs:
 
       - name: Install server dependencies
         run: npm ci
+
+
+  client-test:
+    name: Client Test
+    runs-on: ubuntu-22.04
+    needs: client-lint
+
+    defaults:
+      run:
+        working-directory: client
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/checkout@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Run client dependencies
+        run: npm cli
+
+      - name: Run client tests
+        run: npm test --if-present
+        continue-on-error: true
+
+  server-test:
+    name: Server Test
+    runs-on: ubuntu-22.04
+    needs: server-lint
+
+    defaults:
+      run:
+        working-directory: server
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/checkout@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - name: Run server dependencies
+        run: npm cli
+
+      - name: Run server tests
+        run: npm test --if-present
+        continue-on-error: true
