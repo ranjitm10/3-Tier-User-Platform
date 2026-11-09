@@ -1,55 +1,9 @@
-# ---------------------------------------------------------------
-# WORKFLOW NAME
-# Shown in the "Actions" tab of GitHub for every run.
-# ---------------------------------------------------------------
-name: Enterprise DevSecOps CICD pipeline
-
-# ---------------------------------------------------------------
-# TRIGGER (when does this pipeline run?)
-# Runs only on a push to the "qa" branch, and only if files in
-# client/, server/ or this workflow file itself were changed.
-# This saves runner minutes: a README change won't start a build.
-# ---------------------------------------------------------------
-on:
+name: Enterprise in CICD pipeline
+on: 
   push:
     branches:
-      - qa                                # only the QA branch triggers it
+      - qa
     paths:
-      - client/**                         # frontend code changed
-      - server/**                         # backend code changed
-      - .github/workflows/qa-cicd.yml     # pipeline file changed
-
-# ---------------------------------------------------------------
-# JOBS (a workflow is made of one or more jobs)
-# Each job runs on its own fresh runner (virtual machine).
-# ---------------------------------------------------------------
-jobs:
-
-  # Job ID: used to reference this job from other jobs later,
-  # e.g. "needs: gitleaks-scan" so the build runs only after this passes.
-  gitleaks-scan:
-    name: gitleaks-scan          # display label in the GitHub UI
-    runs-on: ubuntu-latest       # GitHub-hosted Linux runner (has Docker preinstalled)
-
-    steps:
-
-      # STEP 1: Clone the repository onto the runner.
-      # Without this, the runner is empty and has no code to scan.
-      - name: Checkout Source Code
-        uses: actions/checkout@v4     # ready-made action from GitHub Marketplace
-
-      # STEP 2: Scan the code for hardcoded secrets (passwords, API keys, tokens).
-      # This is the "Shift-Left Security" part of DevSecOps: finding
-      # problems early, before the code is built or deployed.
-      - name: Run Gitleaks scan
-        run: |                         # "|" lets us write a multi-line shell command
-          docker run --rm \
-            -v "${{ github.workspace }}:/repo" \
-            zricethezav/gitleaks:latest detect \
-            --source=/repo \
-            --report-format=json \
-            --report-path=/repo/gitleaks-report.json \
-            --redact \
-            --exit-code 0
-        # Explanation of each flag:
-        # docker run --rm
+      - client/**
+      - server/**
+      - .github/workflows/qa-cicd.yml
