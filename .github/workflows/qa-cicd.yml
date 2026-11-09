@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@4
+        uses: actions/checkout@v4
 
       - name: Run GitLeaks Scan
         run: |                         # "|" lets us write a multi-line shell command
